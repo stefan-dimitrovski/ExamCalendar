@@ -51,38 +51,44 @@ class _MyHomePageState extends State<MyHomePage> {
                   labelText: "Subject",
                 ),
               ),
-              ElevatedButton(
-                onPressed: () => showDatePicker(
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(DateTime.now().year - 1),
-                  lastDate: DateTime(DateTime.now().year + 10),
-                  context: context,
-                ).then((date) {
-                  if (date != null) {
-                    String year = date.year.toString();
-                    String month = date.month.toString();
-                    String day = date.day.toString();
-                    dateText =
-                        "$year-${Exam.addZero(month)}-${Exam.addZero(day)}";
-                  }
-                }),
-                child: const Text("Select date"),
-              ),
-              ElevatedButton(
-                onPressed: () => showTimePicker(
-                  context: context,
-                  initialTime: TimeOfDay.now(),
-                ).then(
-                  (date) {
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => showDatePicker(
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(DateTime.now().year - 1),
+                    lastDate: DateTime(DateTime.now().year + 10),
+                    context: context,
+                  ).then((date) {
                     if (date != null) {
-                      String hour = date.hour.toString();
-                      String minute = date.minute.toString();
-                      timeText =
-                          "${Exam.addZero(hour)}:${Exam.addZero(minute)}";
+                      String year = date.year.toString();
+                      String month = date.month.toString();
+                      String day = date.day.toString();
+                      dateText =
+                          "$year-${Exam.addZero(month)}-${Exam.addZero(day)}";
                     }
-                  },
+                  }),
+                  child: const Text("Select date"),
                 ),
-                child: const Text("Select time"),
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay.now(),
+                  ).then(
+                    (date) {
+                      if (date != null) {
+                        String hour = date.hour.toString();
+                        String minute = date.minute.toString();
+                        timeText =
+                            "${Exam.addZero(hour)}:${Exam.addZero(minute)}";
+                      }
+                    },
+                  ),
+                  child: const Text("Select time"),
+                ),
               ),
             ],
           ),
