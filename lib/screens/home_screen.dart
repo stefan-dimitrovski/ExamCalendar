@@ -61,14 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   if (date != null) {
                     String year = date.year.toString();
                     String month = date.month.toString();
-                    if (date.month < 10) {
-                      month = "0$month";
-                    }
                     String day = date.day.toString();
-                    if (date.day < 10) {
-                      day = "0$day";
-                    }
-                    dateText = "$year-$month-$day";
+                    dateText =
+                        "$year-${Exam.addZero(month)}-${Exam.addZero(day)}";
                   }
                 }),
                 child: const Text("Select date"),
@@ -81,14 +76,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   (date) {
                     if (date != null) {
                       String hour = date.hour.toString();
-                      if (hour.length == 1) {
-                        hour = "0$hour";
-                      }
                       String minute = date.minute.toString();
-                      if (minute.length == 1) {
-                        minute = "0$minute";
-                      }
-                      timeText = "$hour:$minute";
+                      timeText =
+                          "${Exam.addZero(hour)}:${Exam.addZero(minute)}";
                     }
                   },
                 ),
