@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Exam Calendar',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
       home: const MyHomePage(title: 'Exams'),
     );

@@ -100,6 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           TextButton(
             onPressed: () {
+              _subjectController.clear();
               Navigator.of(context).pop();
             },
             child: const Text("Cancel"),
@@ -112,6 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     () {
                       dateTime = DateTime.parse('$dateText $timeText:00');
                       elements.add(Exam(_subjectController.text, dateTime));
+                      _subjectController.clear();
                     },
                   );
                   Navigator.of(context).pop();
