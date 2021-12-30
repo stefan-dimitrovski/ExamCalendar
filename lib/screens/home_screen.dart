@@ -13,8 +13,22 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<Exam> elements = <Exam>[];
 
+  late TextEditingController _subjectController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _subjectController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _subjectController.dispose();
+    super.dispose();
+  }
+
   _openDialog() {
-    final _subjectController = TextEditingController();
     String dateText = '';
     String timeText = '';
 
