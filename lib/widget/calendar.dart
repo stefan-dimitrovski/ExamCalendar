@@ -3,6 +3,7 @@ import 'package:exam_calendar/models/exam.dart';
 import 'package:exam_calendar/notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class Calendar extends StatefulWidget {
@@ -16,6 +17,27 @@ class Calendar extends StatefulWidget {
 
 class _CalendarState extends State<Calendar> {
   List<Appointment> exams = [];
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  _deleteExam(String subject) async {
+    var collection = FirebaseFirestore.instance.collection('exams');
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    var snapshot = await collection
+        .where('userId', isEqualTo: userId)
+        .where('subject', isEqualTo: subject)
+        .get();
+    for (var doc in snapshot.docs) {
+      await doc.reference.delete();
+    }
+  }
+
+  _onRefresh() async {
+    exams.clear();
+    await _readExams();
+    setState(() {});
+    _refreshController.refreshCompleted();
+  }
 
   _readExams() {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -70,6 +92,10 @@ class _CalendarState extends State<Calendar> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
+                "Subject: " + appointment.subject.toString(),
+                style: const TextStyle(fontSize: 18),
+              ),
+              Text(
                 "Date: ${Exam.addZero(appointment.startTime.day.toString())}/${Exam.addZero(appointment.startTime.month.toString())}/${Exam.addZero(appointment.startTime.year.toString())}",
                 style: const TextStyle(fontSize: 18),
               ),
@@ -81,13 +107,36 @@ class _CalendarState extends State<Calendar> {
           ),
           actions: <Widget>[
             TextButton(
-                onPressed: () {
-                  //TODO: Add notification
-                  // NotificationWeekAndTime?
-                },
-                child: const Text("Add reminder")),
+              onPressed: () {
+                _deleteExam(appointment.subject);
+                Navigator.of(context).pop();
+              },
+              child: const Text("Delete"),
+            ),
             TextButton(
-              child: const Text("OK"),
+              onPressed: () {
+                NotificationWeekAndTime? pickedSchedule =
+                    NotificationWeekAndTime(
+                  day: appointment.startTime.day,
+                  timeOfDay: TimeOfDay(
+                      hour: appointment.startTime.hour,
+                      minute: appointment.startTime.minute),
+                );
+
+                createExamNotification(pickedSchedule);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Scheduled Notification Created'),
+                  ),
+                );
+
+                Navigator.of(context).pop();
+              },
+              child: const Text("Add reminder"),
+            ),
+            TextButton(
+              child: const Text("Close"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -106,18 +155,22 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    return SfCalendar(
-      firstDayOfWeek: 1,
-      view: CalendarView.month,
-      dataSource: MeetingDataSource(exams),
-      showDatePickerButton: true,
-      onTap: (date) {
-        if (date.appointments!.isNotEmpty) {
-          _showDialogInfo(date.appointments![0]);
-        }
-      },
-      monthViewSettings: const MonthViewSettings(
-          appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
+    return SmartRefresher(
+      controller: _refreshController,
+      onRefresh: _onRefresh,
+      child: SfCalendar(
+        firstDayOfWeek: 1,
+        view: CalendarView.month,
+        dataSource: MeetingDataSource(exams),
+        showDatePickerButton: true,
+        onTap: (date) {
+          if (date.appointments!.isNotEmpty) {
+            _showDialogInfo(date.appointments![0]);
+          }
+        },
+        monthViewSettings: const MonthViewSettings(
+            appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
+      ),
     );
   }
 }

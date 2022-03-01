@@ -5,35 +5,35 @@ Future<void> createExamNotification(
     NotificationWeekAndTime notificationSchedule) async {
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
-      id: createUnqiueId(),
+      id: createUniqueId(),
       channelKey: "scheduled_channel",
       title: "Exam Soon",
       body:
-          "Your exam is scheduled for ${notificationSchedule.timeOfDay} on ${notificationSchedule.dayOfTheWeek}",
+          "Your have an exam in ${notificationSchedule.timeOfDay.hour}:${notificationSchedule.timeOfDay.minute} on ${notificationSchedule.day}",
       notificationLayout: NotificationLayout.Default,
     ),
-    actionButtons: [
-      NotificationActionButton(key: 'MARK_DONE', label: "Mark Done"),
-    ],
+    actionButtons: [NotificationActionButton(key: 'MARK_DONE', label: 'Okay')],
     schedule: NotificationCalendar(
-      weekday: notificationSchedule.dayOfTheWeek,
+      day: notificationSchedule.day,
       hour: notificationSchedule.timeOfDay.hour,
       minute: notificationSchedule.timeOfDay.minute,
       second: 0,
       millisecond: 0,
-      repeats: true,
     ),
   );
 }
 
-createUnqiueId() {
+Future<void> cancelScheduledNotifications() async {
+  await AwesomeNotifications().cancelAllSchedules();
+}
+
+createUniqueId() {
   return DateTime.now().millisecondsSinceEpoch.remainder(100000);
 }
 
 class NotificationWeekAndTime {
-  final int dayOfTheWeek;
+  final int day;
   final TimeOfDay timeOfDay;
 
-  NotificationWeekAndTime(
-      {required this.dayOfTheWeek, required this.timeOfDay});
+  NotificationWeekAndTime({required this.day, required this.timeOfDay});
 }

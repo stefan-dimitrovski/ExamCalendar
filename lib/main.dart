@@ -9,15 +9,15 @@ void main() async {
     null,
     [
       NotificationChannel(
-        channelGroupKey: 'scheduled_channel_group',
         channelKey: 'scheduled_channel',
         channelName: 'Scheduled Notifications',
         channelDescription: 'Notification channel for scheduled tests',
         defaultColor: const Color(0xFF9D50DD),
         ledColor: Colors.blue,
+        channelShowBadge: true,
         importance: NotificationImportance.High,
         locked: true,
-      )
+      ),
     ],
   );
 
