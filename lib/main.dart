@@ -1,7 +1,31 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:exam_calendar/screens/home_screen.dart';
 
-void main() {
+void main() async {
+  AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        channelGroupKey: 'scheduled_channel_group',
+        channelKey: 'scheduled_channel',
+        channelName: 'Scheduled Notifications',
+        channelDescription: 'Notification channel for scheduled tests',
+        defaultColor: const Color(0xFF9D50DD),
+        ledColor: Colors.blue,
+        importance: NotificationImportance.High,
+        locked: true,
+      )
+    ],
+  );
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
