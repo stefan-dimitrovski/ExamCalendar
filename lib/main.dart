@@ -12,7 +12,7 @@ void main() async {
         channelKey: 'scheduled_channel',
         channelName: 'Scheduled Notifications',
         channelDescription: 'Notification channel for scheduled tests',
-        defaultColor: Colors.blue,
+        defaultColor: Colors.red,
         ledColor: Colors.blue,
         channelShowBadge: true,
         importance: NotificationImportance.High,
