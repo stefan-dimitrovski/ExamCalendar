@@ -5,6 +5,7 @@ import 'package:exam_calendar/screens/new_exam_screen.dart';
 import 'package:exam_calendar/widget/calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:geolocator/geolocator.dart';
 
 class MyHomePage extends StatefulWidget {
   final String title;
@@ -82,6 +83,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   MaterialPageRoute(builder: (context) => const MapScreen()));
             },
             icon: const Icon(Icons.map),
+          ),
+          IconButton(
+            tooltip: "Location Notifications",
+            onPressed: () async {
+              Position userLocation = await Geolocator.getCurrentPosition(
+                  desiredAccuracy: LocationAccuracy.high);
+              createLocatioNotification(userLocation.latitude.toString(),
+                  userLocation.longitude.toString());
+            },
+            icon: const Icon(Icons.not_listed_location),
           ),
           IconButton(
             tooltip: "Sign out",

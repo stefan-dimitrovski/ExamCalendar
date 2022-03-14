@@ -115,6 +115,17 @@ class _MapScreenState extends State<MapScreen> {
     });
   }
 
+  void _addMarker(LatLng pos) {
+    Marker _marker;
+    setState(() {
+      _marker = Marker(
+          markerId: MarkerId(pos.toString()),
+          infoWindow: InfoWindow(title: pos.toString()),
+          position: pos);
+      _markers.add(_marker);
+    });
+  }
+
   @override
   void initState() {
     _getCurrentLocation();
@@ -199,16 +210,5 @@ class _MapScreenState extends State<MapScreen> {
         ],
       ),
     );
-  }
-
-  void _addMarker(LatLng pos) {
-    Marker _marker;
-    setState(() {
-      _marker = Marker(
-          markerId: MarkerId(pos.toString()),
-          infoWindow: InfoWindow(title: pos.toString()),
-          position: pos);
-      _markers.add(_marker);
-    });
   }
 }

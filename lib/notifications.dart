@@ -23,6 +23,18 @@ Future<void> createExamNotification(
   );
 }
 
+Future<void> createLocatioNotification(String lat, String lng) async {
+  await AwesomeNotifications().createNotification(
+    content: NotificationContent(
+      id: createUniqueId(),
+      channelKey: 'location_channel',
+      title: "Your Location is fetched",
+      body: "Lat: $lat, Lng: $lng",
+      notificationLayout: NotificationLayout.Default,
+    ),
+  );
+}
+
 Future<void> cancelScheduledNotifications() async {
   await AwesomeNotifications().cancelAllSchedules();
 }
