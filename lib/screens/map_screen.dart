@@ -163,7 +163,7 @@ class _MapScreenState extends State<MapScreen> {
         alignment: Alignment.center,
         children: [
           GoogleMap(
-            onLongPress: _addMarker,
+            // onLongPress: _addMarker,
             markers: _markers,
             polylines: {
               if (_info != null)
