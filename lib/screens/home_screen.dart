@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
             tooltip: "Exams Locations",
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MapScreen()));
+                  MaterialPageRoute(builder: (context) => const MapScreen()));
             },
             icon: const Icon(Icons.map),
           ),

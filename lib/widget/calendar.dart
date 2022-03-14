@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:exam_calendar/models/exam.dart';
+import 'package:exam_calendar/domain/exam.dart';
 import 'package:exam_calendar/notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
